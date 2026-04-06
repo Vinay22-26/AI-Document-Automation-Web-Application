@@ -1,0 +1,22 @@
+<div class="settings-container">
+  <mat-card class="settings-card">
+    <div class="card-header">
+      <mat-icon>settings</mat-icon>
+      <h2>System Preferences</h2>
+    </div>
+
+    <div class="settings-list">
+      <div class="settings-item">
+        <div class="item-info">
+          <span class="item-title">Delete Confirmation</span>
+          <p class="item-description">Show a warning popup before permanently deleting a document.</p>
+        </div>
+        <mat-slide-toggle
+          color="primary"
+          [(ngModel)]="showDeleteConfirmation"
+          (change)="onToggleChange($event.checked)">
+        </mat-slide-toggle>
+      </div>
+    </div>
+  </mat-card>
+</div>

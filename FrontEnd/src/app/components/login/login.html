@@ -1,0 +1,54 @@
+<section class="login-wrapper">
+  <div class="login-card">
+
+    <div class="login-left d-none d-lg-block">
+      <img src="https://images.unsplash.com/photo-1508780709619-79562169bc64" alt="Login Image">
+    </div>
+
+    <div class="login-right">
+      <form (ngSubmit)="onSubmit()">
+
+        <h2>Welcome Back</h2>
+        <p class="subtitle">Sign in to continue</p>
+
+        <div class="input-group">
+          <label>Email Address</label>
+          <input type="email"
+                 [(ngModel)]="credentials.email"
+                 name="email"
+                 required>
+        </div>
+
+        <div class="input-group">
+          <label>Password</label>
+          <input type="password"
+                 [(ngModel)]="credentials.password"
+                 name="password"
+                 required>
+        </div>
+
+        <div class="options">
+          <label class="remember">
+            <input type="checkbox" checked>
+            <span>Remember me</span>
+          </label>
+        </div>
+
+        <button type="submit" class="btn-login">
+          Sign In
+        </button>
+
+        <div class="register-link">
+          Don’t have an account?
+          <a routerLink="/register">Register</a>
+          <br>
+          <br>
+          Continue Without Login
+          <a routerLink="/navbar">Click Here</a>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+</section>

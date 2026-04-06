@@ -1,0 +1,25 @@
+<div class="extract-container">
+  <div class="header">
+    <h2>Extracted Content</h2>
+  </div>
+
+  <div class="content-layout">
+    <div class="file-list">
+      <h3>Files Processed</h3>
+      <ul>
+        <li *ngFor="let item of extractedFiles" (click)="viewContent(item.content)">
+          <i class="file-icon">📄</i>
+          <span>File ID: {{ item.fileId }}</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="viewer">
+      <h3>Content Viewer</h3>
+      <div class="text-area">
+        <pre *ngIf="selectedContent">{{ selectedContent }}</pre>
+        <p *ngIf="!selectedContent" class="placeholder">Select a file to view its extracted text.</p>
+      </div>
+    </div>
+  </div>
+</div>
