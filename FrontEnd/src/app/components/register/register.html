@@ -1,0 +1,48 @@
+<div class="register-wrapper">
+  <div class="register-card">
+
+    <h2>Create Account</h2>
+    <p class="subtitle">Join us and start your journey</p>
+
+    <form [formGroup]="registerForm" (ngSubmit)="registerApi()">
+
+      <div class="form-group">
+        <input type="text" formControlName="userName" placeholder="Username">
+      </div>
+
+      <div class="form-group">
+        <input type="email" formControlName="email" placeholder="Email Address">
+      </div>
+
+      <div class="form-group">
+        <input type="password" formControlName="password" placeholder="Password">
+      </div>
+
+      <div class="form-group">
+        <select formControlName="gender">
+          <option value="" disabled selected>Select Gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <input type="text" formControlName="phoneNumber" placeholder="Phone Number">
+      </div>
+
+      <button type="submit"
+              class="btn-primary"
+              [disabled]="registerForm.invalid">
+        Register
+      </button>
+
+      <button type="button"
+              (click)="login()"
+              class="btn-secondary">
+        Back to Login
+      </button>
+
+    </form>
+  </div>
+</div>

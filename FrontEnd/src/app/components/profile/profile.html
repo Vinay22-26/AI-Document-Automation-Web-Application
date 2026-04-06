@@ -1,0 +1,46 @@
+<div class="profile-page-wrapper">
+  <mat-card class="profile-card" *ngIf="user; else loader">
+    <div class="profile-header">
+      <div class="avatar-circle">
+        {{ user.user_name?.charAt(0).toUpperCase() }}
+      </div>
+      <h2>{{ user.user_name }}</h2>
+      <span class="badge">{{ user.role || 'User' }}</span>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="profile-body">
+      <div class="info-item">
+        <mat-icon>email</mat-icon>
+        <div class="details">
+          <label>Email Address</label>
+          <p>{{ user.email }}</p>
+        </div>
+      </div>
+
+      <div class="info-item">
+        <mat-icon>phone</mat-icon>
+        <div class="details">
+          <label>Phone Number</label>
+          <p>{{ user.phone_number }}</p>
+        </div>
+      </div>
+
+      <div class="info-item">
+        <mat-icon>person</mat-icon>
+        <div class="details">
+          <label>Gender</label>
+          <p>{{ user.gender }}</p>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+
+  <ng-template #loader>
+    <div class="loading-state" *ngIf="loading">
+      <div class="spinner"></div>
+      <p>Fetching Profile...</p>
+    </div>
+  </ng-template>
+</div>

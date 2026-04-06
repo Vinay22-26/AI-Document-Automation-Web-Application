@@ -1,0 +1,113 @@
+$dark-bg: #0b0e14;
+$card-bg: #151921;
+$accent-blue: #4f46e5;
+$text-dim: #94a3b8;
+$text-white: #ffffff;
+
+.profile-page-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 50px;
+  min-height: 80vh;
+
+  .profile-card {
+    width: 100%;
+    max-width: 450px;
+    background: $card-bg;
+    color: $text-white;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 24px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+
+    .profile-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 24px;
+
+      .avatar-circle {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, $accent-blue, #818cf8);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 16px;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: 1.5rem;
+        letter-spacing: 0.5px;
+      }
+
+      .badge {
+        background: rgba(79, 70, 229, 0.2);
+        color: #a5b4fc;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        margin-top: 8px;
+        text-transform: uppercase;
+      }
+    }
+
+    .profile-body {
+      padding-top: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .info-item {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+
+        mat-icon {
+          color: $accent-blue;
+        }
+
+        .details {
+          display: flex;
+          flex-direction: column;
+
+          label {
+            font-size: 0.75rem;
+            color: $text-dim;
+            text-transform: uppercase;
+          }
+
+          p {
+            margin: 0;
+            font-size: 1rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+.loading-state {
+  text-align: center;
+  color: $text-dim;
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-top: 3px solid $accent-blue;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 16px;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
