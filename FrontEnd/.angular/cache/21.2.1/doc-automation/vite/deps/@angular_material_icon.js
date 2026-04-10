@@ -4,10 +4,10 @@ import {
 import {
   DomSanitizer
 } from "./chunk-BJ3TE4I7.js";
-import "./chunk-NKNLXCFQ.js";
 import {
   BidiModule
 } from "./chunk-2TNZZA3T.js";
+import "./chunk-NKNLXCFQ.js";
 import {
   HttpClient
 } from "./chunk-R3FNMBSC.js";
@@ -42,10 +42,10 @@ import {
   ɵɵprojection,
   ɵɵprojectionDef
 } from "./chunk-E5EAER3X.js";
-import "./chunk-4YCCEXQQ.js";
 import {
   forkJoin
 } from "./chunk-J46EEYGT.js";
+import "./chunk-4YCCEXQQ.js";
 import {
   Subscription,
   catchError,

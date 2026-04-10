@@ -2,6 +2,7 @@ import {
   _DisposeViewRepeaterStrategy
 } from "./chunk-VQXT2OWV.js";
 import "./chunk-42QFQP6S.js";
+import "./chunk-N4DOILP3.js";
 import {
   CDK_VIRTUAL_SCROLL_VIEWPORT,
   ScrollingModule,
@@ -21,7 +22,6 @@ import {
 import {
   _isNumberValue
 } from "./chunk-ESBYZNLW.js";
-import "./chunk-N4DOILP3.js";
 import {
   Platform
 } from "./chunk-WEHR6INO.js";
@@ -81,13 +81,13 @@ import {
   ɵɵtextInterpolate1,
   ɵɵviewQuery
 } from "./chunk-E5EAER3X.js";
-import "./chunk-4YCCEXQQ.js";
 import {
   animationFrameScheduler,
   asapScheduler,
   isObservable,
   merge
 } from "./chunk-J46EEYGT.js";
+import "./chunk-4YCCEXQQ.js";
 import {
   BehaviorSubject,
   Subject,

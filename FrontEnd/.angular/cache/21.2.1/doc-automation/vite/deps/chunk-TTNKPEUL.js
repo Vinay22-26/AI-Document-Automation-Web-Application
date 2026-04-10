@@ -2,7 +2,7 @@ import {
   _animationsDisabled,
   isFakeMousedownFromScreenReader,
   isFakeTouchstartFromScreenReader
-} from "./chunk-A2LIHOSJ.js";
+} from "./chunk-YOULXYHN.js";
 import {
   _getEventTarget,
   normalizePassiveListenerOptions
@@ -560,4 +560,4 @@ export {
   MatRipple,
   _StructuralStylesLoader
 };
-//# sourceMappingURL=chunk-YDQUQ6ZM.js.map
+//# sourceMappingURL=chunk-TTNKPEUL.js.map
