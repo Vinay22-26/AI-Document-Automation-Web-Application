@@ -5,6 +5,13 @@
   (drop)="onFileDropped($event)"
   [class.dragging]="isDragging"
 >
+  <div class="loading-overlay" *ngIf="isProcessing">
+    <div class="loader-content">
+      <mat-spinner diameter="50"></mat-spinner>
+      <p>processing Approval...</p>
+    </div>
+  </div>
+
   <mat-card class="table-card">
     <div class="card-header">
       <div class="header-left">
@@ -72,7 +79,12 @@
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef>Action</th>
           <td mat-cell *matCellDef="let file">
-            <button mat-raised-button color="warn" (click)="deleteFile(file.id)">
+            <button
+              mat-raised-button
+              color="warn"
+              (click)="deleteFile(file.id)"
+              [disabled]="file.approval === 'approved'"
+            >
               <mat-icon>delete</mat-icon>
               Delete
             </button>
@@ -86,7 +98,7 @@
               mat-raised-button
               color="primary"
               (click)="approveFile(file.id)"
-              [disabled]="file.approval === 'approved'"
+              [disabled]="file.approval === 'approved' || isProcessing"
             >
               <mat-icon>{{
                 file.approval === 'approved' ? 'check_circle' : 'radio_button_unchecked'

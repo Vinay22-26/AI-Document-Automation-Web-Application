@@ -169,7 +169,7 @@ public class FileController {
         fileRepo.save(file);
 
         try {
-            fileService.extractAndSaveText(file.getId(), file.getData());
+            fileService.extractAndSaveText(file.getId(), file.getData(), file.getEmail());
         } catch (Exception e) {
             System.err.println("Extraction failed but file was approved: " + e.getMessage());
         }

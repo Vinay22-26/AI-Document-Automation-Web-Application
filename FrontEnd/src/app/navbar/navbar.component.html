@@ -7,16 +7,11 @@
     [opened]="(isHandset$ | async) === false"
   >
     <div class="sidenav-header">
-      <mat-icon class="logo-icon">account_tree</mat-icon>
-      <span class="menu-title">Navigation</span>
+      <img src="/assets/icon.jpg" alt="Logo" class="nav-logo">
+      <span class="menu-title">AI DOCUMENT<br>AUTOMATION</span>
     </div>
 
     <mat-nav-list *ngIf="isLoggedIn" class="nav-links">
-      <!-- <a mat-list-item routerLink="/navbar/Home" routerLinkActive="active-link">
-        <mat-icon matListItemIcon>home</mat-icon>
-        <div matListItemTitle>Home</div>
-      </a> -->
-
       <a mat-list-item routerLink="/navbar/files" routerLinkActive="active-link">
         <mat-icon matListItemIcon>folder</mat-icon>
         <div matListItemTitle>Files</div>
@@ -30,6 +25,11 @@
       <a mat-list-item routerLink="/navbar/Validate" routerLinkActive="active-link">
         <mat-icon matListItemIcon>verified</mat-icon>
         <div matListItemTitle>Validate</div>
+      </a>
+
+      <a mat-list-item routerLink="/navbar/chat" routerLinkActive="active-link">
+        <mat-icon matListItemIcon>chat</mat-icon>
+        <div matListItemTitle>Chat</div>
       </a>
 
       <a mat-list-item routerLink="/navbar/Export" routerLinkActive="active-link">
@@ -49,10 +49,6 @@
       <button *ngIf="isHandset$ | async" mat-icon-button (click)="drawer.toggle()">
         <mat-icon>menu</mat-icon>
       </button>
-
-      <div class="brand">
-        <span class="app-title">Doc Automation</span>
-      </div>
 
       <span class="spacer"></span>
 

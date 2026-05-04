@@ -1,24 +1,25 @@
-import { Component } from '@angular/core';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject } from '@angular/core';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-delete-confirm',
   standalone: true,
-  imports: [MatDialogModule, MatCheckboxModule, MatButtonModule, MatIconModule, FormsModule],
+  imports: [CommonModule, MatDialogModule, MatCheckboxModule, MatButtonModule, MatIconModule, FormsModule],
   template: `
     <div class="delete-dialog-container">
       <div class="dialog-header">
-        <mat-icon class="warning-icon">warning</mat-icon>
-        <h2 mat-dialog-title>Confirm Deletion</h2>
+        <mat-icon [style.color]="data.confirmColor || '#ff5252'">{{ data.icon || 'warning' }}</mat-icon>
+        <h2 mat-dialog-title>{{ data.title || 'Confirm Action' }}</h2>
       </div>
 
       <mat-dialog-content>
-        <p class="message-text">Are you sure you want to delete this file? This action cannot be undone.</p>
-        <div class="checkbox-wrapper">
+        <p class="message-text">{{ data.message || 'Are you sure you want to proceed?' }}</p>
+        <div class="checkbox-wrapper" *ngIf="data.showCheckbox">
           <mat-checkbox [(ngModel)]="skipNextTime" color="primary">
             Don't show this message again
           </mat-checkbox>
@@ -27,7 +28,13 @@ import { FormsModule } from '@angular/forms';
 
       <mat-dialog-actions align="end">
         <button mat-button class="cancel-btn" (click)="onCancel()">Cancel</button>
-        <button mat-flat-button class="confirm-btn" (click)="onConfirm()">Delete File</button>
+        <button
+          mat-flat-button
+          [style.background-color]="data.confirmColor || '#ff5252'"
+          class="confirm-btn"
+          (click)="onConfirm()">
+          {{ data.btnText || 'Confirm' }}
+        </button>
       </mat-dialog-actions>
     </div>
   `,
@@ -43,10 +50,6 @@ import { FormsModule } from '@angular/forms';
       align-items: center;
       gap: 12px;
       padding-bottom: 8px;
-    }
-    .warning-icon {
-      color: #ff5252;
-      transform: scale(1.2);
     }
     h2 {
       margin: 0 !important;
@@ -76,12 +79,10 @@ import { FormsModule } from '@angular/forms';
       color: #b0b0b0 !important;
     }
     .confirm-btn {
-      background-color: #ff5252 !important;
       color: white !important;
       border-radius: 6px;
       padding: 0 20px;
     }
-    /* Removes the scrollbar from appearing */
     mat-dialog-content {
       overflow: hidden !important;
       max-height: none !important;
@@ -90,8 +91,17 @@ import { FormsModule } from '@angular/forms';
 })
 export class DeleteConfirmDialog {
   skipNextTime = false;
-  constructor(public dialogRef: MatDialogRef<DeleteConfirmDialog>) {}
 
-  onCancel(): void { this.dialogRef.close(null); }
-  onConfirm(): void { this.dialogRef.close({ confirm: true, skip: this.skipNextTime }); }
+  constructor(
+    public dialogRef: MatDialogRef<DeleteConfirmDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {}
+
+  onCancel(): void {
+    this.dialogRef.close(null);
+  }
+
+  onConfirm(): void {
+    this.dialogRef.close({ confirm: true, skip: this.skipNextTime });
+  }
 }

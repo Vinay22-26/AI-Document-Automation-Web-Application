@@ -9,7 +9,7 @@
       <ul>
         <li *ngFor="let item of extractedFiles" (click)="viewContent(item.content)">
           <i class="file-icon">📄</i>
-          <span>File ID: {{ item.fileId }}</span>
+          <span> {{ item.fileName  }}</span>
         </li>
       </ul>
     </div>

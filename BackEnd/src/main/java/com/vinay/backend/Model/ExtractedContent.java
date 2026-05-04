@@ -16,6 +16,8 @@ public class ExtractedContent {
     @Column(columnDefinition = "LONGTEXT")
     private String content;
 
+    private String email;
+
     public ExtractedContent() {
     }
 
@@ -47,5 +49,13 @@ public class ExtractedContent {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

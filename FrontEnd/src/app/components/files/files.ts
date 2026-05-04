@@ -5,6 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -20,7 +21,8 @@ import { DeleteConfirmDialog } from '../../services/delete-confirm.component';
     MatIconModule,
     MatButtonModule,
     MatSnackBarModule,
-    MatDialogModule
+    MatDialogModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './files.html',
   styleUrl: './files.scss'
@@ -34,6 +36,7 @@ export class Files implements OnInit {
   displayedColumns: string[] = ['id', 'name', 'preview', 'status', 'action'];
   files: any[] = [];
   isDragging = false;
+  isProcessing = false;
   selectedFiles: File[] = [];
   userRole: string | null = null;
 
@@ -61,11 +64,7 @@ export class Files implements OnInit {
 
   loadFiles() {
     const userEmail = localStorage.getItem("LoggedInUser");
-    if (!userEmail) {
-      this.snackBar.open("User not logged in", "Close", { duration: 3000 });
-      return;
-    }
-
+    if (!userEmail) return;
     const finalUrl = (this.userRole === 'ADMIN') ? this.adminUrl : this.apiUrl;
     const urlWithParams = this.userRole === 'ADMIN' ? finalUrl : `${finalUrl}?email=${userEmail}`;
 
@@ -75,7 +74,6 @@ export class Files implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error fetching files:', err);
         this.files = [];
         this.cdr.detectChanges();
       }
@@ -85,19 +83,25 @@ export class Files implements OnInit {
   deleteFile(id: number) {
     const userEmail = localStorage.getItem("LoggedInUser");
     const skipConfirm = localStorage.getItem("skipDeleteConfirm") === 'true';
-
     if (!userEmail) return;
 
     if (skipConfirm) {
       this.executeDelete(id, userEmail);
     } else {
-      const dialogRef = this.dialog.open(DeleteConfirmDialog);
+      const dialogRef = this.dialog.open(DeleteConfirmDialog, {
+        data: {
+          title: 'Confirm Deletion',
+          message: 'Are you sure you want to delete this file?',
+          icon: 'warning',
+          confirmColor: '#ff5252',
+          btnText: 'Delete File',
+          showCheckbox: true
+        }
+      });
 
       dialogRef.afterClosed().subscribe(result => {
         if (result && result.confirm) {
-          if (result.skip) {
-            localStorage.setItem("skipDeleteConfirm", 'true');
-          }
+          if (result.skip) localStorage.setItem("skipDeleteConfirm", 'true');
           this.executeDelete(id, userEmail);
         }
       });
@@ -105,39 +109,53 @@ export class Files implements OnInit {
   }
 
   private executeDelete(id: number, userEmail: string) {
-    this.http.delete(`${this.deleteUrl}${id}?email=${userEmail}`, {
-      responseType: 'text'
-    }).subscribe({
+    this.http.delete(`${this.deleteUrl}${id}?email=${userEmail}`, { responseType: 'text' }).subscribe({
       next: () => {
+        this.http.delete(`http://localhost:8080/api/extract/DeletingExtractedContent/${id}`).subscribe();
         this.files = this.files.filter(f => f.id !== id);
         this.snackBar.open("File deleted successfully", "Close", { duration: 3000 });
         this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error("Delete error:", err);
-        this.snackBar.open("Delete failed", "Close", { duration: 3000 });
       }
     });
   }
 
   approveFile(id: number) {
+    const dialogRef = this.dialog.open(DeleteConfirmDialog, {
+      data: {
+        title: 'Confirm Approval',
+        message: 'Are you sure you want to approve this document?',
+        icon: 'check_circle',
+        confirmColor: '#4caf50',
+        btnText: 'Approve',
+        showCheckbox: false
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.confirm) {
+        this.executeApproval(id);
+      }
+    });
+  }
+
+  private executeApproval(id: number) {
     const userEmail = localStorage.getItem("LoggedInUser");
     if (!userEmail) return;
 
-    this.http.put(
-      `http://localhost:8080/api/files/approve/${id}?email=${userEmail}`,
-      {},
-      { responseType: 'text' }
-    ).subscribe({
+    this.isProcessing = true;
+    this.cdr.detectChanges();
+
+    this.http.put(`http://localhost:8080/api/files/approve/${id}?email=${userEmail}`, {}, { responseType: 'text' }).subscribe({
       next: () => {
-        this.files = this.files.map(f =>
-          f.id === id ? { ...f, approval: 'approved' } : f
-        );
+        this.files = this.files.map(f => f.id === id ? { ...f, approval: 'approved' } : f);
         this.snackBar.open("File approved successfully", "Close", { duration: 3000 });
+        this.isProcessing = false;
         this.cdr.detectChanges();
       },
-      error: (err) => {
+      error: () => {
+        this.isProcessing = false;
         this.snackBar.open("Only Admins can approve files", "Close", { duration: 3000 });
+        this.cdr.detectChanges();
       }
     });
   }
@@ -147,10 +165,6 @@ export class Files implements OnInit {
       next: (blob) => {
         const fileURL = URL.createObjectURL(blob);
         window.open(fileURL, '_blank');
-      },
-      error: (err) => {
-        console.error("Preview error:", err);
-        this.snackBar.open("Access Denied or File not found", "Close", { duration: 3000 });
       }
     });
   }
@@ -205,10 +219,6 @@ export class Files implements OnInit {
         this.snackBar.open(`${this.selectedFiles.length} Files uploaded successfully`, "Close", { duration: 3000 });
         this.selectedFiles = [];
         this.loadFiles();
-      },
-      error: (err) => {
-        console.error('Upload error:', err);
-        this.snackBar.open('One or more uploads failed', "Close", { duration: 3000 });
       }
     });
   }

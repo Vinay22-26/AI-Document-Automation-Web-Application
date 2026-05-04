@@ -7,6 +7,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 
 import { Files } from './components/files/files';
 import { Extract } from './components/extract/extract';
+import { Chat } from './components/chat/chat';
 
 export const routes: Routes = [
   {
@@ -55,6 +56,10 @@ export const routes: Routes = [
       {
         path: 'profile',
         loadComponent: () => import('./components/profile/profile').then((m) => m.Profile),
+      },
+      {
+        path: 'chat',
+        component:Chat
       }
     ],
   },

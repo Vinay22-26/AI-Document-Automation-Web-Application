@@ -19,16 +19,30 @@ export class Extract implements OnInit {
   }
 
   fetchExtractedData() {
+  const email = localStorage.getItem('LoggedInUser');
+
+  if (email === 'admin123@gmail.com') {
     this.http.get<any[]>('http://localhost:8080/api/extract/all').subscribe({
       next: (data) => {
         this.extractedFiles = data;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error fetching data', err);
+        console.error('Error fetching admin data', err);
+      }
+    });
+  } else {
+    this.http.get<any[]>(`http://localhost:8080/api/extract/user/${email}`).subscribe({
+      next: (data) => {
+        this.extractedFiles = data;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error fetching user data', err);
       }
     });
   }
+}
 
   viewContent(content: string) {
     this.selectedContent = content;

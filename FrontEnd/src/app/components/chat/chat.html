@@ -1,0 +1,65 @@
+<div class="app-container">
+  <mat-toolbar class="top-bar">
+    <button mat-icon-button (click)="drawer.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <div class="search-wrapper">
+      <div class="search-container">
+        <mat-icon>search</mat-icon>
+        <input
+          type="text"
+          placeholder="Search extracted files..."
+          [(ngModel)]="searchQuery"
+          (input)="performSearch()"
+          [matAutocomplete]="auto"
+        />
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="onSearchOptionSelected($event)">
+          <mat-option *ngFor="let file of filteredFiles" [value]="file">
+            <mat-icon style="color: #b0b3b8; margin-right: 8px;">description</mat-icon>
+            <span>{{ file.fileName }}</span>
+          </mat-option>
+        </mat-autocomplete>
+      </div>
+    </div>
+
+    <span class="spacer"></span>
+  </mat-toolbar>
+
+  <mat-drawer-container class="chat-container">
+    <mat-drawer #drawer mode="side" opened class="history-sidebar">
+      <div class="sidebar-header">Extracted Files</div>
+      <mat-nav-list>
+        <mat-list-item *ngFor="let file of filteredFiles" (click)="selectFile(file)">
+          <mat-icon matListItemIcon>description</mat-icon>
+          <div matListItemTitle>{{ file.fileName }}</div>
+        </mat-list-item>
+      </mat-nav-list>
+    </mat-drawer>
+
+    <mat-drawer-content class="chat-window">
+      <div class="messages-list" (click)="onMessageClick($event)">
+        <div *ngFor="let msg of messages" [ngClass]="['message', msg.sender]">
+          <div class="bubble" [innerHTML]="msg.safeHtml ? msg.safeHtml : msg.text"></div>
+        </div>
+      </div>
+
+      <div class="input-area">
+        <div class="input-wrapper">
+          <input
+            type="text"
+            placeholder="Ask AI about {{ selectedFile?.fileName || 'documents' }}..."
+            [(ngModel)]="userInput"
+            (keyup.enter)="sendMessage()"
+            [disabled]="isLoading"
+          />
+
+          <button mat-icon-button (click)="sendMessage()" [disabled]="!userInput || isLoading">
+            <mat-icon *ngIf="!isLoading">send</mat-icon>
+            <mat-spinner *ngIf="isLoading" diameter="24"></mat-spinner>
+          </button>
+        </div>
+      </div>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</div>
