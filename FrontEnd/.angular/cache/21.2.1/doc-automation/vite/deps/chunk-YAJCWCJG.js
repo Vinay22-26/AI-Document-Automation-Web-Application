@@ -1,14 +1,14 @@
 import {
   isFakeMousedownFromScreenReader,
   isFakeTouchstartFromScreenReader
-} from "./chunk-OPF7CJBU.js";
+} from "./chunk-NNBBIPOB.js";
+import {
+  _animationsDisabled
+} from "./chunk-NPFKJETB.js";
 import {
   _getEventTarget,
   normalizePassiveListenerOptions
 } from "./chunk-GWBU7KI5.js";
-import {
-  _animationsDisabled
-} from "./chunk-NPFKJETB.js";
 import {
   _CdkPrivateStyleLoader
 } from "./chunk-ZU7D67QR.js";
@@ -562,4 +562,4 @@ export {
   MatRipple,
   _StructuralStylesLoader
 };
-//# sourceMappingURL=chunk-V62NELRL.js.map
+//# sourceMappingURL=chunk-YAJCWCJG.js.map
