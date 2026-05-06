@@ -1,6 +1,7 @@
 package com.vinay.backend.Controller;
 
 import com.vinay.backend.Model.AuditLogs;
+import com.vinay.backend.Model.ExtractedContent;
 import com.vinay.backend.Model.File;
 import com.vinay.backend.Repository.AuditRepo;
 import com.vinay.backend.Repository.FileRepo;
@@ -8,6 +9,12 @@ import com.vinay.backend.Service.FileService;
 import fr.opensagres.poi.xwpf.converter.pdf.PdfConverter;
 import fr.opensagres.poi.xwpf.converter.pdf.PdfOptions;
 import jakarta.servlet.http.HttpServletRequest;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,13 +25,23 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import com.vinay.backend.Model.ExtractedContent;
+import com.vinay.backend.Repository.ExtractedContentRepo;
+import org.apache.pdfbox.pdmodel.*;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
 
 @RestController
 @RequestMapping("/api/files")
 @CrossOrigin(origins = "http://localhost:4200")
 public class FileController {
+
+    @Autowired
+    private ExtractedContentRepo extractedContentRepo;
 
     @Autowired
     private FileRepo fileRepo;
@@ -200,5 +217,67 @@ public class FileController {
             return ResponseEntity.ok(data);
         }
         return ResponseEntity.status(404).body("No files found");
+    }
+
+    // Export edited text as PDF and download
+    @GetMapping("/export/pdf/{fileId}")
+    public ResponseEntity<?> exportAsPdf(@PathVariable Long fileId) {
+        Optional<ExtractedContent> optContent = extractedContentRepo.findByFileId(fileId);
+        if (optContent.isEmpty())
+            return ResponseEntity.notFound().build();
+
+        try {
+            String text = optContent.get().getContent();
+            PDDocument doc = new PDDocument();
+            PDPage page = new PDPage(PDRectangle.A4);
+            doc.addPage(page);
+
+            PDPageContentStream stream = new PDPageContentStream(doc, page);
+            stream.setFont(PDType1Font.HELVETICA, 11);
+            stream.setLeading(16f);
+            stream.beginText();
+            stream.newLineAtOffset(50, 780);
+
+            // Word-wrap lines to fit A4 width
+            for (String line : text.split("\n")) {
+                List<String> wrapped = wrapLine(line, 95);
+                for (String wl : wrapped) {
+                    stream.showText(wl.replaceAll("[^\\x20-\\x7E]", ""));
+                    stream.newLine();
+                }
+            }
+            stream.endText();
+            stream.close();
+
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            doc.save(out);
+            doc.close();
+
+            Optional<File> fileOpt = fileRepo.findById(fileId);
+            String name = fileOpt.map(f -> f.getFileName()
+                    .replaceAll("\\.(pdf|docx|png|jpg|jpeg)$", "") + "_edited.pdf")
+                    .orElse("export.pdf");
+
+            return ResponseEntity.ok()
+                    .header("Content-Disposition", "attachment; filename=\"" + name + "\"")
+                    .header("Content-Type", "application/pdf")
+                    .body(out.toByteArray());
+
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("PDF generation failed: " + e.getMessage());
+        }
+    }
+
+    private List<String> wrapLine(String line, int maxChars) {
+        List<String> result = new ArrayList<>();
+        while (line.length() > maxChars) {
+            int cut = line.lastIndexOf(' ', maxChars);
+            if (cut == -1)
+                cut = maxChars;
+            result.add(line.substring(0, cut));
+            line = line.substring(cut).stripLeading();
+        }
+        result.add(line);
+        return result;
     }
 }

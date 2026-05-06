@@ -1,1 +1,46 @@
-<h1>Validation Works</h1>
+<div class="validate-container">
+  <div class="sidebar">
+    <h3>Your Documents</h3>
+    <ul>
+      <li *ngFor="let f of extractedFiles"
+          [class.active]="selectedFile?.fileId === f.fileId"
+          (click)="selectFile(f)">
+        <span class="file-icon">📄</span> {{ f.fileName }}
+      </li>
+    </ul>
+  </div>
+
+  <div class="editor-area" *ngIf="selectedFile; else noSelection">
+    <div class="editor-header">
+      <h2>{{ selectedFile.fileName }}</h2>
+      <div class="header-actions">
+        <button mat-stroked-button (click)="resetToOriginal()">
+          <mat-icon>restart_alt</mat-icon> Reset
+        </button>
+        <button mat-flat-button color="primary" (click)="saveAndProceed()">
+          <mat-icon>arrow_forward</mat-icon> Save & Export
+        </button>
+      </div>
+    </div>
+
+    <div class="ai-bar">
+      <input [(ngModel)]="aiPrompt" placeholder="Ask AI to fix, summarise, or rewrite..." />
+      <button mat-flat-button color="accent" (click)="aiAssist()" [disabled]="aiLoading">
+        <mat-icon>auto_fix_high</mat-icon> {{ aiLoading ? 'Working...' : 'AI Assist' }}
+      </button>
+    </div>
+
+    <div class="error-list" *ngIf="errors.length > 0">
+      <p *ngFor="let e of errors">⚠ {{ e }}</p>
+    </div>
+
+    <textarea [(ngModel)]="editedContent" rows="30" spellcheck="true"></textarea>
+  </div>
+
+  <ng-template #noSelection>
+    <div class="empty-state">
+      <mat-icon>description</mat-icon>
+      <p>Select a document from the left to start editing</p>
+    </div>
+  </ng-template>
+</div>

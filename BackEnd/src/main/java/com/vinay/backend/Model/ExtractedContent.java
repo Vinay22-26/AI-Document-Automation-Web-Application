@@ -18,6 +18,30 @@ public class ExtractedContent {
 
     private String email;
 
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
+    private byte[] originalBytes;
+
+    @Column
+    private String originalMimeType;
+
+    // add getters/setters
+    public byte[] getOriginalBytes() {
+        return originalBytes;
+    }
+
+    public void setOriginalBytes(byte[] originalBytes) {
+        this.originalBytes = originalBytes;
+    }
+
+    public String getOriginalMimeType() {
+        return originalMimeType;
+    }
+
+    public void setOriginalMimeType(String originalMimeType) {
+        this.originalMimeType = originalMimeType;
+    }
+
     public ExtractedContent() {
     }
 

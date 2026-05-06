@@ -50,6 +50,8 @@ public class FileService {
                         .orElse(new ExtractedContent());
                 contentEntity.setFileId(fileId);
                 contentEntity.setEmail(email);
+                contentEntity.setOriginalBytes(data);
+                contentEntity.setOriginalMimeType(mimeType);
                 contentEntity.setContent(formattedText.trim());
                 extractedContentRepo.save(contentEntity);
             }

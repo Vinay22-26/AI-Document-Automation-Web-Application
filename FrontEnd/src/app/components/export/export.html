@@ -1,1 +1,15 @@
-<h1>Export Works</h1>
+<div class="export-container">
+  <div class="export-card">
+    <mat-icon class="export-icon">picture_as_pdf</mat-icon>
+    <h2>Ready to Export</h2>
+    <p class="file-name">{{ fileName }}</p>
+    <p class="sub">Your edited document is validated and ready. Click below to download as PDF.</p>
+
+    <button mat-flat-button color="primary" (click)="downloadPdf()" [disabled]="!fileId || downloading">
+      <mat-icon>download</mat-icon>
+      {{ downloading ? 'Generating PDF...' : 'Download as PDF' }}
+    </button>
+
+    <p *ngIf="!fileId" class="warn">⚠ No document selected. Go back to Validate and save first.</p>
+  </div>
+</div>

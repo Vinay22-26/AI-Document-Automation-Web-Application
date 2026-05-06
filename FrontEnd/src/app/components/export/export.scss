@@ -1,112 +1,112 @@
-$accent: #6366f1;
-$bg-card: #1c1c1f;
-$border: #2d2d30;
-$text-dim: #94a3b8;
-$success: #10b981;
-
 .export-container {
   display: flex;
-  height: 100%;
-  width: 100%;
-  justify-content: center;
   align-items: center;
-  animation: scaleUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  justify-content: center;
+  height: calc(100vh - 64px);
+  background-color: #f0f4f8;
+  padding: 24px;
 }
 
-.success-card {
+.export-card {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 48px 40px;
   width: 100%;
-  max-width: 550px;
-  background: $bg-card;
-  border: 1px solid $border;
-  border-radius: 28px;
-  padding: 40px;
+  max-width: 480px;
   text-align: center;
-  box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.6);
-
-  .confetti-icon {
-    width: 80px;
-    height: 80px;
-    background: rgba($success, 0.1);
-    color: $success;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto 24px;
-    
-    mat-icon { font-size: 48px; width: 48px; height: 48px; }
-  }
-
-  .success-header {
-    margin-bottom: 32px;
-    h1 { color: #fff; font-size: 1.8rem; margin-bottom: 8px; }
-    p { color: $text-dim; font-size: 0.95rem; line-height: 1.6; }
-  }
-}
-
-.summary-box {
-  display: flex;
-  background: #121214;
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 32px;
-  border: 1px solid $border;
-
-  .summary-item {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    border-right: 1px solid $border;
-    &:last-child { border-right: none; }
-
-    .label { font-size: 0.65rem; color: #4b5563; text-transform: uppercase; font-weight: 800; }
-    .value { font-size: 0.9rem; color: #fff; font-weight: 600; }
-    .success-text { color: $success; }
-  }
-}
-
-.export-actions {
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.02);
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-bottom: 24px;
+  align-items: center;
 
-  button {
-    height: 54px;
-    border-radius: 14px;
+  .export-icon {
+    font-size: 56px;
+    width: 56px;
+    height: 56px;
+    color: #2563eb;
+    margin-bottom: 24px;
+    background: #eff6ff;
+    padding: 20px;
+    border-radius: 50%;
+    box-sizing: content-box;
+    box-shadow: inset 0 2px 4px rgba(37, 99, 235, 0.1);
+  }
+
+  h2 {
+    margin: 0 0 16px;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: -0.3px;
+  }
+
+  .file-name {
+    margin: 0 0 12px;
+    font-size: 1.05rem;
     font-weight: 600;
-    font-size: 1rem;
-    mat-icon { margin-right: 10px; }
+    color: #1e293b;
+    background: #f8fafc;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 1px dashed #cbd5e1;
+    display: inline-block;
+    word-break: break-all;
+    max-width: 100%;
   }
 
-  .btn-copy {
-    background: #fff;
-    color: #000;
-    &:hover { background: #e2e8f0; }
+  .sub {
+    margin: 12px 0 32px;
+    font-size: 0.95rem;
+    color: #64748b;
+    line-height: 1.6;
   }
 
-  .btn-download {
-    background: $accent;
-    color: #fff;
-    &:hover { background: lighten($accent, 5%); }
+  button[mat-flat-button] {
+    height: 52px;
+    padding: 0 32px;
+    border-radius: 14px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    background: #2563eb;
+    color: #ffffff;
+    letter-spacing: 0.3px;
+    transition: all 0.2s ease;
+    width: 100%;
+
+    mat-icon {
+      margin-right: 8px;
+      font-size: 22px;
+      width: 22px;
+      height: 22px;
+    }
+
+    &:hover:not(:disabled) {
+      background: #1d4ed8;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(37, 99, 235, 0.2);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    &:disabled {
+      background: #f1f5f9;
+      color: #94a3b8;
+    }
   }
-}
 
-.btn-reset {
-  color: $text-dim;
-  font-size: 0.9rem;
-  &:hover { color: #fff; background: rgba(255,255,255,0.05); }
-}
-
-@keyframes scaleUp {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-/* Global Snackbar Style (Add to styles.scss if needed) */
-::ng-deep .dark-snackbar {
-  background: #27272a !important;
-  color: #fff !important;
-  border: 1px solid #3f3f46 !important;
+  .warn {
+    margin: 24px 0 0;
+    padding: 12px 16px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #dc2626;
+    background: #fef2f2;
+    border-radius: 10px;
+    border: 1px solid #fecaca;
+    width: 100%;
+    box-sizing: border-box;
+  }
 }

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/extract")
@@ -73,6 +74,20 @@ public class ExtractedContentController {
                 .map(content -> {
                     extractedContentRepo.delete(content);
                     return ResponseEntity.ok().build();
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    // Save edited text back
+    @PutMapping("/update/{fileId}")
+    public ResponseEntity<?> updateContent(
+            @PathVariable Long fileId,
+            @RequestBody Map<String, String> body) {
+        return extractedContentRepo.findByFileId(fileId)
+                .map(content -> {
+                    content.setContent(body.get("content"));
+                    extractedContentRepo.save(content);
+                    return ResponseEntity.ok("Updated");
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
