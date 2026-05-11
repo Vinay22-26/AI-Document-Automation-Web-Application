@@ -1,10 +1,4 @@
 import {
-  _getEventTarget,
-  _getFocusedElementPierceShadowDom,
-  _getShadowRoot,
-  normalizePassiveListenerOptions
-} from "./chunk-GWBU7KI5.js";
-import {
   _VisuallyHiddenLoader,
   _setInnerHtml
 } from "./chunk-XHHX4MEN.js";
@@ -12,15 +6,21 @@ import {
   DomSanitizer
 } from "./chunk-GVHENNRI.js";
 import {
+  _getEventTarget,
+  _getFocusedElementPierceShadowDom,
+  _getShadowRoot,
+  normalizePassiveListenerOptions
+} from "./chunk-GWBU7KI5.js";
+import {
+  BreakpointObserver
+} from "./chunk-NRHGJEPI.js";
+import {
   _CdkPrivateStyleLoader
 } from "./chunk-ZU7D67QR.js";
 import {
   coerceElement,
   coerceNumberProperty
 } from "./chunk-XIINE7KE.js";
-import {
-  BreakpointObserver
-} from "./chunk-NRHGJEPI.js";
 import {
   Platform
 } from "./chunk-Z7QUTWJF.js";
@@ -2445,4 +2445,4 @@ export {
   addAriaReferencedId,
   removeAriaReferencedId
 };
-//# sourceMappingURL=chunk-NNBBIPOB.js.map
+//# sourceMappingURL=chunk-ZASHUCRI.js.map

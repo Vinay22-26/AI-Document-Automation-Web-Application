@@ -39,8 +39,16 @@ public class AiService {
 
             RestTemplate restTemplate = new RestTemplate(factory);
 
-            String prompt = "Extract complete invoice data with correct table structure. Do not miss any row or column. Preserve totals accurately.Extract the text clearly if it is not a invoice also. Fix OCR issues.\n\n"
-                    + rawText;
+            String prompt = """
+                    You are a document extraction AI. Extract the content below and format it using markdown:
+                    - Use ### for section headings
+                    - Use **key:** value for labeled fields
+                    - Use proper markdown tables (with | separators and header rows) for tabular data
+                    - Do NOT add any commentary, explanations, or text outside the document content
+                    - Do NOT add "Non-Invoice Text:" or any meta-commentary
+
+                    Document text:
+                    """ + rawText;
 
             Map<String, Object> message = new HashMap<>();
             message.put("role", "user");
@@ -49,7 +57,7 @@ public class AiService {
             String[] models = {
                     "llama-4-maverick",
                     "llama-3.3-70b-versatile"
-                    
+
             };
 
             for (String model : models) {

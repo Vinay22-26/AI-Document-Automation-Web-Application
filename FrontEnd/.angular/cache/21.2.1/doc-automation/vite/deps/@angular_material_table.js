@@ -2,6 +2,7 @@ import {
   _DisposeViewRepeaterStrategy
 } from "./chunk-5OQJP7JW.js";
 import "./chunk-42QFQP6S.js";
+import "./chunk-N4DOILP3.js";
 import {
   CDK_VIRTUAL_SCROLL_VIEWPORT,
   ScrollingModule,
@@ -21,7 +22,6 @@ import {
 import {
   _isNumberValue
 } from "./chunk-XIINE7KE.js";
-import "./chunk-N4DOILP3.js";
 import {
   Platform
 } from "./chunk-Z7QUTWJF.js";
