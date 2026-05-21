@@ -23,7 +23,12 @@
           <p class="subtitle">View and manage your uploaded business assets</p>
         </div>
       </div>
-      <div class="header-right">
+      <div class="header-right" style="display: flex; gap: 16px; align-items: center;">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Search Files</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Search...">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
         <button mat-flat-button color="primary" class="upload-btn" (click)="triggerFileSelect()">
           <mat-icon>cloud_upload</mat-icon>
           Upload Document
@@ -33,12 +38,7 @@
     </div>
 
     <div class="table-wrapper">
-      <table mat-table [dataSource]="files">
-        <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef>ID</th>
-          <td mat-cell *matCellDef="let file" class="id-cell">#{{ file.id }}</td>
-        </ng-container>
-
+      <table mat-table [dataSource]="dataSource">
         <ng-container matColumnDef="name">
           <th mat-header-cell *matHeaderCellDef>File Name</th>
           <td mat-cell *matCellDef="let file">
@@ -62,7 +62,7 @@
           <th mat-header-cell *matHeaderCellDef>Preview</th>
           <td mat-cell *matCellDef="let file">
             <button mat-stroked-button class="btn-preview" (click)="previewFile(file.id)">
-              <mat-icon>visibility</mat-icon>
+              <mat-icon>visibility</mat-icon> Preview
             </button>
           </td>
         </ng-container>
@@ -112,7 +112,7 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns" class="data-row"></tr>
       </table>
 
-      <div *ngIf="files.length === 0" class="empty-state">
+      <div *ngIf="dataSource.data.length === 0" class="empty-state">
         <mat-icon>inventory_2</mat-icon>
         <p>No documents available at the moment.</p>
       </div>

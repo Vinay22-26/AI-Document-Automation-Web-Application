@@ -22,17 +22,17 @@
         <div matListItemTitle>Extract</div>
       </a>
 
-      <a mat-list-item routerLink="/navbar/Validate" routerLinkActive="active-link">
+      <a *ngIf="!isAdmin" mat-list-item routerLink="/navbar/Validate" routerLinkActive="active-link">
         <mat-icon matListItemIcon>verified</mat-icon>
         <div matListItemTitle>Validate</div>
       </a>
 
       <a mat-list-item routerLink="/navbar/chat" routerLinkActive="active-link">
         <mat-icon matListItemIcon>chat</mat-icon>
-        <div matListItemTitle>Chat</div>
+        <div matListItemTitle>Support</div>
       </a>
 
-      <a mat-list-item routerLink="/navbar/Export" routerLinkActive="active-link">
+      <a *ngIf="!isAdmin" mat-list-item routerLink="/navbar/Export" routerLinkActive="active-link">
         <mat-icon matListItemIcon>download</mat-icon>
         <div matListItemTitle>Export</div>
       </a>

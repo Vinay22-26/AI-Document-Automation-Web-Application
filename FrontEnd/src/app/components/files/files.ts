@@ -1,15 +1,18 @@
 import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DeleteConfirmDialog } from '../../services/delete-confirm.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-files',
@@ -22,7 +25,9 @@ import { DeleteConfirmDialog } from '../../services/delete-confirm.component';
     MatButtonModule,
     MatSnackBarModule,
     MatDialogModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   templateUrl: './files.html',
   styleUrl: './files.scss'
@@ -33,8 +38,9 @@ export class Files implements OnInit {
   private snackBar = inject(MatSnackBar);
   private dialog = inject(MatDialog);
 
-  displayedColumns: string[] = ['id', 'name', 'preview', 'status', 'action'];
+  displayedColumns: string[] = ['name', 'preview', 'status', 'action'];
   files: any[] = [];
+  dataSource = new MatTableDataSource<any>([]);
   isDragging = false;
   isProcessing = false;
   selectedFiles: File[] = [];
@@ -54,12 +60,17 @@ export class Files implements OnInit {
   setupPermissions() {
     if (this.userRole === 'ADMIN') {
       if (!this.displayedColumns.includes('user')) {
-        this.displayedColumns.splice(2, 0, 'user');
+        this.displayedColumns.splice(1, 0, 'user');
       }
       if (!this.displayedColumns.includes('approval')) {
         this.displayedColumns.push('approval');
       }
     }
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   loadFiles() {
@@ -71,10 +82,12 @@ export class Files implements OnInit {
     this.http.get<any[]>(urlWithParams).subscribe({
       next: (res) => {
         this.files = res;
+        this.dataSource.data = this.files;
         this.cdr.detectChanges();
       },
       error: (err) => {
         this.files = [];
+        this.dataSource.data = this.files;
         this.cdr.detectChanges();
       }
     });
@@ -113,6 +126,7 @@ export class Files implements OnInit {
       next: () => {
         this.http.delete(`http://localhost:8080/api/extract/DeletingExtractedContent/${id}`).subscribe();
         this.files = this.files.filter(f => f.id !== id);
+        this.dataSource.data = this.files;
         this.snackBar.open("File deleted successfully", "Close", { duration: 3000 });
         this.cdr.detectChanges();
       }
@@ -148,6 +162,7 @@ export class Files implements OnInit {
     this.http.put(`http://localhost:8080/api/files/approve/${id}?email=${userEmail}`, {}, { responseType: 'text' }).subscribe({
       next: () => {
         this.files = this.files.map(f => f.id === id ? { ...f, approval: 'approved' } : f);
+        this.dataSource.data = this.files;
         this.snackBar.open("File approved successfully", "Close", { duration: 3000 });
         this.isProcessing = false;
         this.cdr.detectChanges();

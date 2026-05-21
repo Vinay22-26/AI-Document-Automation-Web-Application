@@ -10,6 +10,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { Router, RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-navbar',
@@ -23,6 +24,7 @@ import { map, shareReplay } from 'rxjs/operators';
     MatListModule,
     MatIconModule,
     MatMenuModule,
+    MatDividerModule,
     RouterModule,
     AsyncPipe,
     NgIf
@@ -41,12 +43,19 @@ export class NavbarComponent {
     return !!localStorage.getItem('LoggedInUser');
   }
 
+  get isAdmin(): boolean {
+    const role = localStorage.getItem('role');
+    return role ? role.toLowerCase() === 'admin' : false;
+  }
+
   get userEmail(): string | null {
     return localStorage.getItem('LoggedInUser');
   }
 
   logout() {
+    localStorage.removeItem('token');
     localStorage.removeItem('LoggedInUser');
-    this.router.navigate(['/login']);
+    localStorage.removeItem('role');
+    this.router.navigate(['/Login']);
   }
 }

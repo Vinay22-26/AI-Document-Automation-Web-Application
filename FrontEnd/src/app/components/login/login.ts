@@ -26,7 +26,7 @@ export class Login {
         localStorage.setItem("token", res.token);
         localStorage.setItem("role", res.role);
         localStorage.setItem("LoggedInUser", res.email);
-        this.router.navigate(['/navbar']);
+        this.router.navigate(['/navbar/files']);
       },
       error: () => {
         alert("Invalid Email or Password");
